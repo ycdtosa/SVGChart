@@ -55,7 +55,7 @@ namespace SVGChart {
         virtual long GetFontHeight () const { return fontSize; }
         virtual void DrawText (int inX, int inY, const char *inString);
         virtual void DrawRotatedText (int inX, int inY, float inDegrees, const char *inString);
-        virtual void SetStyle ([[maybe_unused]] const PStyle &inStyle){};
+        virtual void SetStyle ([[maybe_unused]] const PStyle &inStyle){}
         void writeFile(string filePath);
         // public member variables
         

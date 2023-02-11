@@ -78,10 +78,16 @@ namespace SVGChart {
 
     class PlotDataPointer: public PlotDataBase {
     public:
-      PlotDataPointer (const PlotDataBase *inPlotData):mPlotData (inPlotData){};// does not own them
+      PlotDataPointer (const PlotDataBase *inPlotData)
+          : mPlotData (inPlotData)
+        {}// does not own them
 
-      virtual const RealPlotData * GetRealPlotData () const {return mPlotData->GetRealPlotData ();};
-      virtual const CalculatedDataBase * GetCalculatedData () const {return mPlotData->GetCalculatedData ();}
+      virtual const RealPlotData * GetRealPlotData () const
+        {return mPlotData->GetRealPlotData ();}
+
+      virtual const CalculatedDataBase * GetCalculatedData () const 
+        {return mPlotData->GetCalculatedData ();}
+
     private:
       const PlotDataBase *mPlotData;
     };
@@ -89,7 +95,8 @@ namespace SVGChart {
     // default data class
     class PlotData: public RealPlotData, public PlotDataBase {
      public:
-      virtual const RealPlotData * GetRealPlotData () const {return this;};
+      virtual const RealPlotData * GetRealPlotData () const
+        {return this;}
     };
 
     class CalculatedData: public CalculatedDataBase {
@@ -120,7 +127,9 @@ namespace SVGChart {
     public:
       DummyData (long inSize=0);
 
-      virtual const RealPlotData * GetRealPlotData () const {return &mRealPlotData;};
+      virtual const RealPlotData * GetRealPlotData () const
+        {return &mRealPlotData;}
+
     private:
       RealPlotData mRealPlotData;
     };
@@ -129,9 +138,12 @@ namespace SVGChart {
     public:
       void AddItem (const char *inString);
 
-      const vector<string> * GetStringData () const {return &mStringData;};
+      const vector<string> * GetStringData () const
+        {return &mStringData;}
 
-      virtual const RealPlotData * GetRealPlotData () const {return &mRealPlotData;};
+      virtual const RealPlotData * GetRealPlotData () const
+        {return &mRealPlotData;}
+
     private:
       RealPlotData mRealPlotData;
       vector<string> mStringData;
@@ -153,7 +165,10 @@ namespace SVGChart {
     class PMargins {
      public:
       PMargins () = default;
-      PMargins (long inLeft, long inRight, long inTop, long inBottom):mLeft (inLeft), mRight (inRight), mTop(inTop), mBottom (inBottom) {};
+      PMargins (long inLeft, long inRight, long inTop, long inBottom)
+          : mLeft (inLeft), mRight (inRight), mTop(inTop), mBottom (inBottom) 
+        {}
+
       long mLeft{0};
       long mRight{0};
       long mTop{0};
@@ -163,7 +178,10 @@ namespace SVGChart {
     class PColor {
      public:
       PColor () = default;
-      PColor (int inR, int inG, int inB): mR(inR), mG(inG), mB(inB){};
+      PColor (int inR, int inG, int inB)
+          : mR(inR), mG(inG), mB(inB)
+        {}
+  
       unsigned char mR{0};
       unsigned char mG{0};
       unsigned char mB{0};
@@ -186,7 +204,9 @@ namespace SVGChart {
 
     class PlotDataSelection: public vector<int> {
     public:
-      PlotDataSelection (long inSize=0):vector<int>(inSize){};
+      PlotDataSelection (long inSize=0)
+          : vector<int>(inSize)
+        {}
 
       bool IsSelected (long inIndex) const;
       long GetSelectedCount () const;
@@ -209,7 +229,8 @@ namespace SVGChart {
       virtual long GetFontHeight () const =0;
       virtual void DrawText (int inX, int inY, const char *inString)=0;
       virtual void DrawRotatedText (int inX, int inY, float inDegrees, const char *inString)=0;
-      virtual void SetStyle ([[maybe_unused]] const PStyle &inStyle) {};
+      virtual void SetStyle ([[maybe_unused]] const PStyle &inStyle)
+        {}
     };
 
     class Trafo;
@@ -218,10 +239,10 @@ namespace SVGChart {
     class DataDrawerBase {
      public:
       DataDrawerBase () = default;
-      virtual ~DataDrawerBase (){};
+      virtual ~DataDrawerBase () = default;
 
-      void SetXTrafo (Trafo *inTrafo) {mXTrafo = inTrafo;};
-      void SetYTrafo (Trafo *inTrafo) {mYTrafo = inTrafo;};
+      void SetXTrafo (Trafo *inTrafo) {mXTrafo = inTrafo;}
+      void SetYTrafo (Trafo *inTrafo) {mYTrafo = inTrafo;}
       void SetDrawFast (bool inDrawFast) {mDrawFast = inDrawFast;}
       void SetPlotCount (int inPlotCount) {mPlotCount = inPlotCount;}
       void SetPlotIndex (int inPlotIndex) {mPlotIndex = inPlotIndex;}
@@ -268,7 +289,10 @@ namespace SVGChart {
     class BarDataDrawer: public DataDrawerBase {
      public:
       BarDataDrawer() = default;
-      BarDataDrawer( bool inDrawOnlyLastPoint ):mDrawOnlyLastPoint (inDrawOnlyLastPoint){};
+      BarDataDrawer( bool inDrawOnlyLastPoint )
+          :mDrawOnlyLastPoint (inDrawOnlyLastPoint)
+        {}
+
       virtual bool DrawData (const PlotDataBase &inXData, const PlotDataBase &inYData, const PlotDataSelection &inPlotDataSelection, const AxisSetup &inXAxisSetup, const PRect &inRect, Painter &inPainter) const;
       virtual DataDrawerBase* Clone () const;
 
@@ -289,7 +313,8 @@ namespace SVGChart {
       void AddXYPlot (PlotDataBase *inXData, PlotDataBase *inYData, LegendData *inLegendData=nullptr, DataDrawerBase *inDataDrawer=nullptr, PlotDataSelection *inPlotDataSelection=nullptr);//takes ownership
       void SetXYPlot (int inIndex, PlotDataBase *inXData, PlotDataBase *inYData, LegendData *inLegendData=nullptr, DataDrawerBase *inDataDrawer=nullptr, PlotDataSelection *inPlotDataSelection=nullptr);//takes ownership
 
-      int GetPlotCount () const {return mYDataList.size ();};
+      int GetPlotCount () const
+        {return mYDataList.size ();}
 
       PlotDataBase * GetXData (int inIndex);
       PlotDataBase * GetYData (int inIndex);
@@ -322,7 +347,9 @@ namespace SVGChart {
     class GridInfo {
     public:
         GridInfo () = default;
-        GridInfo (const bool inXGridOn, const bool inYGridOn ) : mXGridOn (inXGridOn), mYGridOn (inYGridOn) {};
+        GridInfo (const bool inXGridOn, const bool inYGridOn )
+            : mXGridOn (inXGridOn), mYGridOn (inYGridOn)
+          {}
         
         bool mXGridOn{false};
         bool mYGridOn{false};
@@ -352,10 +379,10 @@ namespace SVGChart {
      public:
       AxisSetup () = default;
 
-      void SetMin (float inMin) {mMin = inMin;};
-      void SetMax (float inMax) {mMax = inMax;};
-      void SetAutoScale (bool inBool) {mAutoScaleMin = mAutoScaleMax = inBool;};
-      bool IsAutoScale () const {return mAutoScaleMin && mAutoScaleMax;};
+      void SetMin (float inMin) {mMin = inMin;}
+      void SetMax (float inMax) {mMax = inMax;}
+      void SetAutoScale (bool inBool) {mAutoScaleMin = mAutoScaleMax = inBool;}
+      bool IsAutoScale () const {return mAutoScaleMin && mAutoScaleMax;}
 
       float mMin{ 0 };
       float mMax{ 0 };
@@ -406,15 +433,16 @@ namespace SVGChart {
     class TickIterator {
     public:
       TickIterator () = default;
-      virtual ~TickIterator () {};
+      virtual ~TickIterator () = default;
 
       virtual bool Init ()=0;
       virtual bool GetNextTick (float &outTick, bool &outIsMajorTick, string &outFormatString)=0;
 
       virtual bool InitFromRanges (float inParRange, float inOrthoScreenRange, float inDivGuess, TickInfo &outTickInfo) const=0;
-      virtual bool AdjustRange ([[maybe_unused]] float &ioMin, [[maybe_unused]] float &ioMax) const{return true;};
+      virtual bool AdjustRange ([[maybe_unused]] float &ioMin, [[maybe_unused]] float &ioMax) const
+        {return true;}
 
-      void SetAxisSetup (const AxisSetup *inAxisSetup) {mAxisSetup = inAxisSetup;};
+      void SetAxisSetup (const AxisSetup *inAxisSetup) {mAxisSetup = inAxisSetup;}
 
     protected:
       const AxisSetup *mAxisSetup{ nullptr };
@@ -454,7 +482,8 @@ namespace SVGChart {
     public:
       NamedTickIterator () = default;
 
-      void SetStringList (const vector<string> &inStringList) {mStringList = inStringList;};
+      void SetStringList (const vector<string> &inStringList)
+        {mStringList = inStringList;}
 
       //  virtual bool Init ();
       virtual bool GetNextTick (float &outTick, bool &outIsMajorTick, string &outFormatString);
@@ -479,8 +508,8 @@ namespace SVGChart {
      public:
       typedef vector<PDrawer *> tList;
 
-      virtual ~PDrawer (){};
-      virtual bool Prepare ([[maybe_unused]] Painter &inPainter, [[maybe_unused]] PPlot& inPPlot) {return true;};
+      virtual ~PDrawer () = default;
+      virtual bool Prepare ([[maybe_unused]] Painter &inPainter, [[maybe_unused]] PPlot& inPPlot) {return true;}
       virtual bool Draw (Painter &inPainter)=0;
     };
 
@@ -488,10 +517,13 @@ namespace SVGChart {
      public:
       typedef vector<PCalculator *> tList;
 
-      virtual ~PCalculator (){};
+      virtual ~PCalculator () = default;
 
-      virtual bool ShouldCalculate () const {return true;};
-      virtual bool Calculate ([[maybe_unused]] Painter &inPainter, [[maybe_unused]] PPlot& inPPlot) {return true;};
+      virtual bool ShouldCalculate () const 
+        {return true;}
+      
+      virtual bool Calculate ([[maybe_unused]] Painter &inPainter, [[maybe_unused]] PPlot& inPPlot)
+        {return true;}
     };
 
 
