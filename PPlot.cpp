@@ -943,15 +943,12 @@ namespace SVGChart {
     }
 
     PPlot::PPlot ():
-      mHasAnyModifyingCalculatorBeenActive (false),
+      mMargins ( kDefaultMargins ),
       mXTickIterator (&mXLinTickIterator),
       mYTickIterator (&mYLinTickIterator),
       mXTrafo (&mXLinTrafo),
-      mYTrafo (&mYLinTrafo),
-      mOwnsPPlotDrawer (true)
-    
+      mYTrafo (&mYLinTrafo)
     {
-       mMargins = kDefaultMargins;
        mYAxisSetup.mAscending = false;
     }
 

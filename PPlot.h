@@ -49,12 +49,10 @@ namespace SVGChart {
 
     typedef vector<float> RealPlotData;
 
-    class PStyle {
-    public:
-      PStyle (): mFontSize(10), mPenWidth (1){};
-      int mFontSize;
+    struct PStyle {
+      int mFontSize{10};
       string mFont;
-      int mPenWidth;
+      int mPenWidth{1};
       string mPenStyle;
       map<string,string> mVar;
     };
@@ -145,38 +143,38 @@ namespace SVGChart {
 
     class PRect {
      public:
-      PRect ():mX(0),mY(0),mW(0),mH(0){};
-      long mX;
-      long mY;
-      long mW;
-      long mH;
+      PRect () = default;
+      long mX{0};
+      long mY{0};
+      long mW{0};
+      long mH{0};
     };
 
     class PMargins {
      public:
-      PMargins ():mLeft (0), mRight(0), mTop (0), mBottom (0){};
+      PMargins () = default;
       PMargins (long inLeft, long inRight, long inTop, long inBottom):mLeft (inLeft), mRight (inRight), mTop(inTop), mBottom (inBottom) {};
-      long mLeft;
-      long mRight;
-      long mTop;
-      long mBottom;
+      long mLeft{0};
+      long mRight{0};
+      long mTop{0};
+      long mBottom{0};
     };
 
     class PColor {
      public:
-      PColor (): mR(0), mG(0), mB(0){};
+      PColor () = default;
       PColor (int inR, int inG, int inB): mR(inR), mG(inG), mB(inB){};
-      unsigned char mR;
-      unsigned char mG;
-      unsigned char mB;
+      unsigned char mR{0};
+      unsigned char mG{0};
+      unsigned char mB{0};
     };
 
     class LegendData {
     public:
-      LegendData (): mShow (true) {};
+      LegendData () = default;
       string mName;
       PColor mColor;
-      bool mShow;
+      bool mShow{ true };
 
       void SetDefaultColor (int inPlotIndex);
       void SetDefaultValues (int inPlotIndex);
@@ -219,7 +217,7 @@ namespace SVGChart {
 
     class DataDrawerBase {
      public:
-      DataDrawerBase (): mDrawFast (false), mPlotCount (1), mPlotIndex (0) {};
+      DataDrawerBase () = default;
       virtual ~DataDrawerBase (){};
 
       void SetXTrafo (Trafo *inTrafo) {mXTrafo = inTrafo;};
@@ -232,44 +230,50 @@ namespace SVGChart {
 
       virtual DataDrawerBase* Clone () const = 0;
      protected:
-      Trafo *mXTrafo {nullptr};
-      Trafo *mYTrafo {nullptr};
-      bool  mDrawFast;
-      int   mPlotCount;
-      int   mPlotIndex;
+      Trafo *mXTrafo{nullptr};
+      Trafo *mYTrafo{nullptr};
+      bool  mDrawFast{false};
+      int   mPlotCount{1};
+      int   mPlotIndex{0};
     };
 
     typedef vector<DataDrawerBase *> DataDrawerList;
 
     class LineDataDrawer: public DataDrawerBase {
      public:
-      LineDataDrawer ():mDrawLine (true), mDrawPoint (false){};
+      LineDataDrawer () = default;
+      LineDataDrawer ( bool DrawLine, bool DrawPoint ):
+        mDrawLine( DrawLine )
+        ,mDrawPoint( DrawPoint )
+      {}
+
       virtual bool DrawData (const PlotDataBase &inXData, const PlotDataBase &inYData, const PlotDataSelection &inPlotDataSelection, const AxisSetup &inXAxisSetup, const PRect &inRect, Painter &inPainter) const;
 
       virtual DataDrawerBase* Clone () const;
       virtual bool DrawPoint (int inScreenX, int inScreenY, const PRect &inRect, Painter &inPainter) const;
       virtual bool DrawSelection (int inScreenX, int inScreenY, const PRect &inRect, Painter &inPainter) const;
 
-      bool mDrawLine;
-      bool mDrawPoint;
+      bool mDrawLine{ true };
+      bool mDrawPoint{ false };
       PStyle mStyle;
     };
 
     class DotDataDrawer: public LineDataDrawer {
      public:
-         DotDataDrawer () { mDrawLine = false; mDrawPoint = true;};
+       DotDataDrawer (): LineDataDrawer( false, true ) {}
 
       virtual bool DrawPoint (int inScreenX, int inScreenY, const PRect &inRect, Painter &inPainter) const;
     };
 
     class BarDataDrawer: public DataDrawerBase {
      public:
-       BarDataDrawer (bool inDrawOnlyLastPoint = false):mDrawOnlyLastPoint (inDrawOnlyLastPoint){};
+      BarDataDrawer() = default;
+      BarDataDrawer( bool inDrawOnlyLastPoint ):mDrawOnlyLastPoint (inDrawOnlyLastPoint){};
       virtual bool DrawData (const PlotDataBase &inXData, const PlotDataBase &inYData, const PlotDataSelection &inPlotDataSelection, const AxisSetup &inXAxisSetup, const PRect &inRect, Painter &inPainter) const;
       virtual DataDrawerBase* Clone () const;
 
      protected:
-      bool mDrawOnlyLastPoint;// special mode
+      bool mDrawOnlyLastPoint{ false }; // special mode
       virtual bool DrawOnlyLastPoint (const PlotDataBase &inXData, const PlotDataBase &inYData, const PlotDataSelection &inPlotDataSelection, const AxisSetup &inXAxisSetup, const PRect &inRect, Painter &inPainter) const;
     };
 
@@ -317,94 +321,91 @@ namespace SVGChart {
 
     class GridInfo {
     public:
-        GridInfo (const bool inXGridOn = false, const bool inYGridOn = false) : mXGridOn (inXGridOn), mYGridOn (inYGridOn) {};
+        GridInfo () = default;
+        GridInfo (const bool inXGridOn, const bool inYGridOn ) : mXGridOn (inXGridOn), mYGridOn (inYGridOn) {};
         
-        bool    mXGridOn;
-        bool    mYGridOn;
+        bool mXGridOn{false};
+        bool mYGridOn{false};
     };
 
     class TickInfo {
      public:
-      TickInfo ():mAutoTick (true), mAutoTickSize (true), mTicksOn (true), mTickDivision(1), mMajorTickSpan(1), mMajorTickScreenSize (1), mMinorTickScreenSize (1), mFormatString ("%.0f") {};
-
-
+      TickInfo () = default;
       static float RoundSpan (float inSpan);
 
       static void MakeFormatString (float inValue, string &outFormatString);
 
-      bool mAutoTick;
-      bool mAutoTickSize;
-      bool mTicksOn;
+      bool mAutoTick{ true };
+      bool mAutoTickSize{ true };
+      bool mTicksOn{ true };
       
-      int mTickDivision;
-      float mMajorTickSpan; // in plot units
-      int mMajorTickScreenSize;
-      int mMinorTickScreenSize;
-      string mFormatString;
+      int mTickDivision{ 1 };
+      float mMajorTickSpan{ 1 }; // in plot units
+      int mMajorTickScreenSize{ 1 };
+      int mMinorTickScreenSize{ 1 };
+      string mFormatString{ "%.0f" };
       PStyle mStyle;
     };
 
     class AxisSetup {
 
      public:
-      AxisSetup (): mMin(0),mMax(0), mAutoScaleMin(true), mAutoScaleMax (true), mAscending (true), mLogScale(false), mCrossOrigin(true), mMaxDecades(-1), mLogFactor (1), mLogBase (10) {};
+      AxisSetup () = default;
 
       void SetMin (float inMin) {mMin = inMin;};
       void SetMax (float inMax) {mMax = inMax;};
       void SetAutoScale (bool inBool) {mAutoScaleMin = mAutoScaleMax = inBool;};
       bool IsAutoScale () const {return mAutoScaleMin && mAutoScaleMax;};
 
-      float mMin;
-      float mMax;
-      bool mAutoScaleMin;
-      bool mAutoScaleMax;
-      bool mAscending;  // not Ascending: Descending
-      bool mLogScale;
-      bool mCrossOrigin;
-      long mMaxDecades;// property for auto logscale
-      long mLogFactor;// to make db possible with logscale
-      float mLogBase;
+      float mMin{ 0 };
+      float mMax{ 0 };
+      bool mAutoScaleMin{ true };
+      bool mAutoScaleMax{ true };
+      bool mAscending{ true };  // not Ascending: Descending
+      bool mLogScale{ false };
+      bool mCrossOrigin{ true };
+      long mMaxDecades{ -1 };// property for auto logscale
+      long mLogFactor{ 1 };// to make db possible with logscale
+      float mLogBase{ 10 };
 
       string mLabel;
       PStyle mStyle;
 
       TickInfo mTickInfo;
-
-     private:
     };
 
     class Trafo {
      public:
-      virtual ~Trafo (){};
+      virtual ~Trafo () = default;
       virtual float Transform (float inValue) const=0;
       virtual float TransformBack (float inValue) const = 0;
     };
     class LinTrafo: public Trafo {
      public:
-      LinTrafo ():mOffset (0), mSlope(0){};
+      LinTrafo () = default;
 
       virtual float Transform (float inValue) const;
       virtual float TransformBack (float inValue) const;
 
-      float mOffset;
-      float mSlope;
+      float mOffset{ 0 };
+      float mSlope{ 0 };
     };
 
     class LogTrafo: public Trafo {
      public:
-      LogTrafo ():mOffset (0), mSlope(0), mBase (10), mFactor (1){};
+      LogTrafo () = default;
       virtual float Transform (float inValue) const;
       virtual float TransformBack (float inValue) const;
 
-      float mOffset;
-      float mSlope;
-      float mBase;
-      float mFactor;
+      float mOffset{ 0 };
+      float mSlope{ 0 };
+      float mBase{ 10 };
+      float mFactor{ 1 };
     };
 
     class TickIterator {
     public:
-      TickIterator ():mAxisSetup (nullptr){};
+      TickIterator () = default;
       virtual ~TickIterator () {};
 
       virtual bool Init ()=0;
@@ -414,27 +415,28 @@ namespace SVGChart {
       virtual bool AdjustRange ([[maybe_unused]] float &ioMin, [[maybe_unused]] float &ioMax) const{return true;};
 
       void SetAxisSetup (const AxisSetup *inAxisSetup) {mAxisSetup = inAxisSetup;};
+
     protected:
-      const AxisSetup *mAxisSetup;
+      const AxisSetup *mAxisSetup{ nullptr };
     };
 
     class LinTickIterator: public TickIterator {
     public:
-      LinTickIterator ():mCurrentTick (0), mDelta (0){}
+      LinTickIterator () = default;
       virtual bool Init ();
       virtual bool GetNextTick (float &outTick, bool &outIsMajorTick, string &outFormatString);
 
       bool InitFromRanges (float inParRange, float inOrthoScreenRange, float inDivGuess, TickInfo &outTickInfo) const;
     protected:
-      float mCurrentTick;
-      long mCount;
-      float mDelta;
+      float mCurrentTick{ 0 };
+      long mCount{ 0 }; //was uninitialized
+      float mDelta{ 0 };
       string mFormatString;
     };
 
     class LogTickIterator: public TickIterator {
     public:
-      LogTickIterator ():mCurrentTick (0), mDelta (0){}
+      LogTickIterator () = default;
       virtual bool Init ();
       virtual bool GetNextTick (float &outTick, bool &outIsMajorTick, string &outFormatString);
 
@@ -443,14 +445,14 @@ namespace SVGChart {
       float RoundUp (float inFloat) const;
       float RoundDown (float inFloat) const;
     protected:
-      float mCurrentTick;
-      long mCount;
-      float mDelta;
+      float mCurrentTick{ 0 };
+      long mCount{ 0 }; //was uninitialized
+      float mDelta{ 0 };
     };
 
     class NamedTickIterator: public LinTickIterator {
     public:
-      NamedTickIterator (){}
+      NamedTickIterator () = default;
 
       void SetStringList (const vector<string> &inStringList) {mStringList = inStringList;};
 
@@ -464,9 +466,9 @@ namespace SVGChart {
 
     class PlotBackground {
      public:
-      PlotBackground ():mTransparent (true), mPlotRegionBackColor (255,255,255) {};
-      bool mTransparent;
-      PColor mPlotRegionBackColor;
+      PlotBackground () = default;
+      bool mTransparent{ true };
+      PColor mPlotRegionBackColor{ 255, 255, 255 };
       string mTitle;
       PStyle mStyle;
     };
@@ -515,7 +517,7 @@ namespace SVGChart {
       void SetPPlotDrawer (PDrawer *inPDrawer);// taker ownership. Used to bypass normal Draw function, i.e., set Draw function by composition.
       void SetPPlotDrawer (PDrawer &inPDrawer);// same as above: does not take ownership
 
-      bool mHasAnyModifyingCalculatorBeenActive;
+      bool mHasAnyModifyingCalculatorBeenActive{ false };
       PCalculator::tList mModifyingCalculatorList;
       PCalculator::tList mPostCalculatorList;
       PDrawer::tList mPreDrawerList;
@@ -568,8 +570,8 @@ namespace SVGChart {
       LogTickIterator mYLogTickIterator;
       NamedTickIterator mXNamedTickIterator;
 
-      PDrawer * mPPlotDrawer {nullptr};
-      bool mOwnsPPlotDrawer;
+      PDrawer * mPPlotDrawer{ nullptr };
+      bool mOwnsPPlotDrawer{ true };
     };
 
     bool MakeExamplePlot (int inExample, PPlot &ioPPlot);
