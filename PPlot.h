@@ -50,9 +50,9 @@ namespace SVGChart {
     typedef vector<float> RealPlotData;
 
     struct PStyle {
-      int mFontSize{10};
+      int mFontSize{ 10 };
       string mFont;
-      int mPenWidth{1};
+      int mPenWidth{ 1 };
       string mPenStyle;
       map<string,string> mVar;
     };
@@ -144,29 +144,29 @@ namespace SVGChart {
     class PRect {
      public:
       PRect () = default;
-      long mX{0};
-      long mY{0};
-      long mW{0};
-      long mH{0};
+      long mX{ 0 };
+      long mY{ 0 };
+      long mW{ 0 };
+      long mH{ 0 };
     };
 
     class PMargins {
      public:
       PMargins () = default;
       PMargins (long inLeft, long inRight, long inTop, long inBottom):mLeft (inLeft), mRight (inRight), mTop(inTop), mBottom (inBottom) {};
-      long mLeft{0};
-      long mRight{0};
-      long mTop{0};
-      long mBottom{0};
+      long mLeft{ 0 };
+      long mRight{ 0 };
+      long mTop{ 0 };
+      long mBottom{ 0 };
     };
 
     class PColor {
      public:
       PColor () = default;
       PColor (int inR, int inG, int inB): mR(inR), mG(inG), mB(inB){};
-      unsigned char mR{0};
-      unsigned char mG{0};
-      unsigned char mB{0};
+      unsigned char mR{ 0 };
+      unsigned char mG{ 0 };
+      unsigned char mB{ 0 };
     };
 
     class LegendData {
@@ -230,11 +230,11 @@ namespace SVGChart {
 
       virtual DataDrawerBase* Clone () const = 0;
      protected:
-      Trafo *mXTrafo{nullptr};
-      Trafo *mYTrafo{nullptr};
-      bool  mDrawFast{false};
-      int   mPlotCount{1};
-      int   mPlotIndex{0};
+      Trafo *mXTrafo{ nullptr };
+      Trafo *mYTrafo{ nullptr };
+      bool  mDrawFast{ false };
+      int   mPlotCount{ 1 };
+      int   mPlotIndex{ 0 };
     };
 
     typedef vector<DataDrawerBase *> DataDrawerList;
@@ -324,8 +324,8 @@ namespace SVGChart {
         GridInfo () = default;
         GridInfo (const bool inXGridOn, const bool inYGridOn ) : mXGridOn (inXGridOn), mYGridOn (inYGridOn) {};
         
-        bool mXGridOn{false};
-        bool mYGridOn{false};
+        bool mXGridOn{ false };
+        bool mYGridOn{ false };
     };
 
     class TickInfo {
